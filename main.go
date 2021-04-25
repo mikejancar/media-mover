@@ -26,6 +26,9 @@ func main() {
 }
 
 func movePictures(source string, destination string) {
+	picsMoved := 0
+	dupesMoved := 0
+
 	err := filepath.Walk(source, func(path string, file os.FileInfo, err error) error {
 		match, err := filepath.Match("*.[j|p][p|n]g", file.Name())
 		if err != nil {
@@ -41,6 +44,7 @@ func movePictures(source string, destination string) {
 				if err != nil {
 					return err
 				}
+				dupesMoved++
 			} else {
 				img, err := os.Open(path)
 				if err != nil {
@@ -60,12 +64,14 @@ func movePictures(source string, destination string) {
 					if err != nil {
 						return err
 					}
+					dupesMoved++
 					return nil
 				}
 				err = os.Rename(path, fmt.Sprintf("%s/%d/%s", destination, taken.Year(), file.Name()))
 				if err != nil {
 					return err
 				}
+				picsMoved++
 			}
 		}
 		return nil
@@ -74,9 +80,12 @@ func movePictures(source string, destination string) {
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error moving pictures: %s", err))
 	}
+	fmt.Printf("Moved %d pictures and %d dupes\n", picsMoved, dupesMoved)
 }
 
 func moveVideos(source string, destination string) {
+	videosMoved := 0
+
 	err := filepath.Walk(source, func(path string, file os.FileInfo, err error) error {
 		match, err := filepath.Match("*.[m|3|g][p|g|i|o][4|p|f|v]", file.Name())
 		if err != nil {
@@ -93,6 +102,7 @@ func moveVideos(source string, destination string) {
 			if err != nil {
 				return err
 			}
+			videosMoved++
 		}
 		return nil
 	})
@@ -100,12 +110,13 @@ func moveVideos(source string, destination string) {
 	if err != nil {
 		fmt.Println(fmt.Errorf("Error moving videos: %s", err))
 	}
+	fmt.Printf("Moved %d videos\n", videosMoved)
 }
 
 func printUsage() {
 	fmt.Println("---------------")
 	fmt.Println("--Media Mover--")
 	fmt.Println("---------------")
-	fmt.Println("Usage: mediamover [source folder] [picture destination] [video destination]")
+	fmt.Println("Usage: media-mover [source folder] [picture destination] [video destination]")
 	fmt.Println("---------------")
 }
