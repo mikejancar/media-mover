@@ -59,7 +59,7 @@ func movePictures(source string, destination string) {
 
 				taken, err := exifData.DateTime()
 				if err != nil {
-					fmt.Printf("DateTime data not found on %s", file.Name())
+					fmt.Printf("DateTime data not found on %s\n", file.Name())
 					err := os.Rename(path, fmt.Sprintf("C:/Temp/DupePics/%s", file.Name()))
 					if err != nil {
 						return err
@@ -78,7 +78,7 @@ func movePictures(source string, destination string) {
 	})
 
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error moving pictures: %s", err))
+		fmt.Println(fmt.Errorf("Error moving pictures: %s\n", err))
 	}
 	fmt.Printf("Moved %d pictures and %d dupes\n", picsMoved, dupesMoved)
 }
@@ -108,7 +108,7 @@ func moveVideos(source string, destination string) {
 	})
 
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error moving videos: %s", err))
+		fmt.Println(fmt.Errorf("Error moving videos: %s\n", err))
 	}
 	fmt.Printf("Moved %d videos\n", videosMoved)
 }
