@@ -15,15 +15,15 @@ var knownErrors = map[string]int{
 }
 
 func main() {
-	// inputArgs := os.Args[1:]
+	inputArgs := os.Args[1:]
 
-	// if len(inputArgs) != 3 {
-	// 	printUsage()
-	// 	return
-	// }
-	sourceFolder := /*inputArgs[0]*/ "C:\\Users\\Mikej\\Dropbox\\Camera Uploads"
-	pictureDest := /*inputArgs[1]*/ "C:\\Media\\Pictures"
-	videoDest := /*inputArgs[2]*/ "C:\\Media\\Video\\Home Movies"
+	if len(inputArgs) != 3 {
+		printUsage()
+		return
+	}
+	sourceFolder := inputArgs[0]
+	pictureDest := inputArgs[1]
+	videoDest := inputArgs[2]
 
 	movePictures(sourceFolder, pictureDest)
 	moveVideos(sourceFolder, videoDest)
