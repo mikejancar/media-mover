@@ -10,16 +10,20 @@ import (
 	"github.com/rwcarlsen/goexif/exif"
 )
 
-func main() {
-	inputArgs := os.Args[1:]
+var knownErrors = map[string]int{
+	"exif: failed to find exif intro marker": 1,
+}
 
-	if len(inputArgs) != 3 {
-		printUsage()
-		return
-	}
-	sourceFolder := inputArgs[0]
-	pictureDest := inputArgs[1]
-	videoDest := inputArgs[2]
+func main() {
+	// inputArgs := os.Args[1:]
+
+	// if len(inputArgs) != 3 {
+	// 	printUsage()
+	// 	return
+	// }
+	sourceFolder := /*inputArgs[0]*/ "C:\\Users\\Mikej\\Dropbox\\Camera Uploads"
+	pictureDest := /*inputArgs[1]*/ "C:\\Media\\Pictures"
+	videoDest := /*inputArgs[2]*/ "C:\\Media\\Video\\Home Movies"
 
 	movePictures(sourceFolder, pictureDest)
 	moveVideos(sourceFolder, videoDest)
@@ -53,6 +57,16 @@ func movePictures(source string, destination string) {
 
 				exifData, err := exif.Decode(img)
 				if err != nil {
+					_, isKnown := knownErrors[err.Error()]
+					if isKnown {
+						fmt.Printf("Error decoding image...moving %s to staging for inspection\n", file.Name())
+						img.Close()
+						err := os.Rename(path, fmt.Sprintf("C:/Temp/DupePics/%s", file.Name()))
+						if err != nil {
+							return err
+						}
+						return nil
+					}
 					return err
 				}
 				img.Close()
