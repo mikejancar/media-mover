@@ -12,6 +12,7 @@ import (
 
 var knownErrors = map[string]int{
 	"exif: failed to find exif intro marker": 1,
+	"EOF":                                    2,
 }
 
 func main() {
